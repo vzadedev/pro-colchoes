@@ -1,0 +1,6 @@
+
+> pro-colchoes-front@0.1.0 build
+> next build
+
+'next' n∆o Ç reconhecido como um comando interno
+ou externo, um programa oper†vel ou um arquivo em lotes.
