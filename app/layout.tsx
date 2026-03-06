@@ -26,23 +26,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex h-screen bg-gray-50 overflow-hidden font-sans">
+    <html lang="pt-BR" className="antialiased">
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans text-slate-900 dark:text-slate-50 selection:bg-indigo-100 selection:text-indigo-900`}>
+        {/* Fundo decorativo sutil (opcional para dar um toque premium) */}
+        <div className="fixed inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-50 via-slate-50 to-white dark:from-zinc-900 dark:via-zinc-950 dark:to-black"></div>
+
+        <div className="flex h-screen overflow-hidden">
           {/* Sidebar Fixa na Esquerda */}
           <Sidebar />
 
           {/* Área de Conteúdo Principal */}
-          <div className="flex flex-col flex-1 overflow-hidden">
+          <div className="flex flex-col flex-1 overflow-hidden relative">
             {/* Navbar no Topo */}
-            <Navbar />
+            <div className="absolute top-0 w-full z-40 pointer-events-none px-6 pt-4">
+              <div className="pointer-events-auto">
+                <Navbar />
+              </div>
+            </div>
 
             {/* Onde as páginas são renderizadas */}
-            <main className="flex-1 overflow-y-auto p-6 bg-zinc-50 dark:bg-zinc-900">
-              {children}
+            <main className="flex-1 overflow-y-auto px-6 pb-6 pt-24 bg-transparent">
+              <div className="max-w-7xl mx-auto w-full h-full">
+                {children}
+              </div>
             </main>
           </div>
-          <Toaster position="top-right" richColors theme="light" />
+          <Toaster position="top-right" richColors theme="system" />
         </div>
       </body>
     </html>

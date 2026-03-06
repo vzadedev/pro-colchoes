@@ -7,6 +7,7 @@ import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
 import Badge, { variants } from "../../components/ui/Badge";
 import PageTransition from "../../components/ui/PageTransition";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/Table";
 import { Plus, CheckCircle, AlertTriangle, RotateCcw, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
@@ -169,76 +170,76 @@ export default function EntregasPage() {
     <PageTransition>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">Entregas</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-50">Entregas</h2>
           <button
             type="button"
             onClick={openCreate}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors shadow-sm"
           >
             <Plus className="w-5 h-5" />
             Nova entrega
           </button>
         </div>
 
-        <Card delay={0.1}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-gray-100 text-gray-600 text-sm bg-gray-50/50">
-                  <th className="py-3 px-4 font-medium rounded-tl-lg">Transportador</th>
-                  <th className="py-3 font-medium">Veículo</th>
-                  <th className="py-3 font-medium">Carga</th>
-                  <th className="py-3 font-medium">Status</th>
-                  <th className="py-3 font-medium">Data entrega</th>
-                  <th className="py-3 font-medium">Avaria</th>
-                  <th className="py-3 font-medium w-40 rounded-tr-lg">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {entregas.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-8 text-center text-gray-500">
-                      Nenhuma entrega registrada.
-                    </td>
-                  </tr>
-                ) : (
-                  entregas.map((e) => {
-                    const cargaNome = getCarga(e.cargaId)?.produto ?? "-";
-                    return (
-                      <tr key={e.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                        <td className="py-3 px-4 text-gray-900 font-medium">
-                          {getTransportador(e.transportadorId)?.nome ?? "-"}
-                        </td>
-                        <td className="py-3 text-gray-600">
-                          {getVeiculo(e.veiculoId)?.placa ?? "-"}
-                        </td>
-                        <td className="py-3 text-gray-600">
-                          {cargaNome}
-                        </td>
-                        <td className="py-3">
-                          <Badge variant={statusVariant[e.status]}>
-                            {e.status}
-                          </Badge>
-                        </td>
-                        <td className="py-3 text-gray-600 text-sm">
-                          {e.dataEntrega
-                            ? new Date(e.dataEntrega).toLocaleString("pt-BR")
-                            : "-"}
-                        </td>
-                        <td className="py-3 text-gray-600">
-                          {e.temAvaria ? (
-                            <span className="text-red-600 text-sm font-medium">
-                              {e.descricaoAvaria || "Sim"}
-                            </span>
-                          ) : (
-                            "-"
-                          )}
-                        </td>
-                        <td className="py-3 flex gap-1 flex-wrap">
+        <Card delay={0.1} className="!p-0 overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Transportador</TableHead>
+                <TableHead>Veículo</TableHead>
+                <TableHead>Carga</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Data entrega</TableHead>
+                <TableHead>Avaria</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {entregas.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    Nenhuma entrega registrada.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                entregas.map((e) => {
+                  const cargaNome = getCarga(e.cargaId)?.produto ?? "-";
+                  return (
+                    <TableRow key={e.id}>
+                      <TableCell className="font-medium text-slate-900 dark:text-slate-100">
+                        {getTransportador(e.transportadorId)?.nome ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-slate-500 dark:text-slate-400">
+                        {getVeiculo(e.veiculoId)?.placa ?? "-"}
+                      </TableCell>
+                      <TableCell className="text-slate-500 dark:text-slate-400">
+                        {cargaNome}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={statusVariant[e.status]}>
+                          {e.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-slate-500 dark:text-slate-400">
+                        {e.dataEntrega
+                          ? new Date(e.dataEntrega).toLocaleString("pt-BR")
+                          : "-"}
+                      </TableCell>
+                      <TableCell className="text-slate-500 dark:text-slate-400">
+                        {e.temAvaria ? (
+                          <span className="text-rose-600 dark:text-rose-400 font-medium">
+                            {e.descricaoAvaria || "Sim"}
+                          </span>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2 inline-flex items-center">
                           <button
                             type="button"
                             onClick={() => openEdit(e)}
-                            className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors"
+                            className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors"
                             aria-label="Editar"
                             title="Editar entrega"
                           >
@@ -249,7 +250,7 @@ export default function EntregasPage() {
                               <button
                                 type="button"
                                 onClick={() => marcarConcluida(e.id, cargaNome)}
-                                className="p-1.5 text-green-600 hover:bg-green-100 rounded-md transition-colors"
+                                className="p-2 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-lg transition-colors"
                                 title="Marcar como Concluída"
                               >
                                 <CheckCircle className="w-4 h-4" />
@@ -257,7 +258,7 @@ export default function EntregasPage() {
                               <button
                                 type="button"
                                 onClick={() => marcarAvaria(e.id)}
-                                className="p-1.5 text-amber-600 hover:bg-amber-100 rounded-md transition-colors"
+                                className="p-2 text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-500/10 rounded-lg transition-colors"
                                 title="Registrar Avaria"
                               >
                                 <AlertTriangle className="w-4 h-4" />
@@ -265,21 +266,21 @@ export default function EntregasPage() {
                               <button
                                 type="button"
                                 onClick={() => marcarDevolucao(e.id)}
-                                className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+                                className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors"
                                 title="Registrar Devolução"
                               >
                                 <RotateCcw className="w-4 h-4" />
                               </button>
                             </>
                           )}
-                        </td>
-                      </tr>
-                    )
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })
+              )}
+            </TableBody>
+          </Table>
         </Card>
 
         <Modal

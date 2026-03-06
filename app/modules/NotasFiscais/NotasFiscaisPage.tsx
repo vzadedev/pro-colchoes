@@ -6,6 +6,7 @@ import type { NotaFiscal } from "../../types";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
 import PageTransition from "../../components/ui/PageTransition";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/Table";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -114,47 +115,49 @@ export default function NotasFiscaisPage() {
           </button>
         </div>
 
-        <Card delay={0.1}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-gray-100 text-gray-600 text-sm bg-gray-50/50">
-                  <th className="py-3 px-4 font-medium rounded-tl-lg">Nº Nota</th>
-                  <th className="py-3 font-medium">Valor</th>
-                  <th className="py-3 font-medium">ICMS</th>
-                  <th className="py-3 font-medium">CFOP</th>
-                  <th className="py-3 font-medium">CNPJ Cliente</th>
-                  <th className="py-3 font-medium">Status</th>
-                  <th className="py-3 font-medium w-24 rounded-tr-lg">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {notasFiscais.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-8 text-center text-gray-500">
-                      Nenhuma nota fiscal cadastrada.
-                    </td>
-                  </tr>
-                ) : (
-                  notasFiscais.map((n) => (
-                    <tr key={n.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                      <td className="py-3 px-4 font-medium text-gray-900">
-                        {n.numeroNota}
-                      </td>
-                      <td className="py-3 text-gray-600">
-                        R$ {n.valor.toLocaleString("pt-BR")}
-                      </td>
-                      <td className="py-3 text-gray-600">R$ {n.icms.toFixed(2)}</td>
-                      <td className="py-3 text-gray-600">{n.cfop}</td>
-                      <td className="py-3 text-gray-600 font-mono text-sm">
-                        {n.cnpjCliente}
-                      </td>
-                      <td className="py-3 text-gray-600 capitalize">{n.status}</td>
-                      <td className="py-3 flex gap-1">
+        <Card delay={0.1} className="!p-0 overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nº Nota</TableHead>
+                <TableHead>Valor</TableHead>
+                <TableHead>ICMS</TableHead>
+                <TableHead>CFOP</TableHead>
+                <TableHead>CNPJ Cliente</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {notasFiscais.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    Nenhuma nota fiscal cadastrada.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                notasFiscais.map((n) => (
+                  <TableRow key={n.id}>
+                    <TableCell className="font-medium text-slate-900 dark:text-slate-100">
+                      {n.numeroNota}
+                    </TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">
+                      R$ {n.valor.toLocaleString("pt-BR")}
+                    </TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">R$ {n.icms.toFixed(2)}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{n.cfop}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400 font-mono text-sm">
+                      {n.cnpjCliente}
+                    </TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400 capitalize">
+                      {n.status}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2 inline-flex items-center">
                         <button
                           type="button"
                           onClick={() => openEdit(n)}
-                          className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors"
+                          className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors"
                           aria-label="Editar"
                         >
                           <Pencil className="w-4 h-4" />
@@ -162,18 +165,18 @@ export default function NotasFiscaisPage() {
                         <button
                           type="button"
                           onClick={() => handleDelete(n.id, n.numeroNota)}
-                          className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+                          className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors"
                           aria-label="Excluir"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </Card>
 
         <Modal

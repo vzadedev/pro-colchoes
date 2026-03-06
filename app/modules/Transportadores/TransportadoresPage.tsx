@@ -6,6 +6,7 @@ import type { Transportador } from "../../types";
 import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
 import PageTransition from "../../components/ui/PageTransition";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/Table";
 import { Plus, Pencil, Trash2, Star } from "lucide-react";
 import { toast } from "sonner";
 
@@ -98,46 +99,46 @@ export default function TransportadoresPage() {
           </button>
         </div>
 
-        <Card delay={0.1}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-gray-100 text-gray-600 text-sm bg-gray-50/50">
-                  <th className="py-3 px-4 font-medium rounded-tl-lg">Nome</th>
-                  <th className="py-3 font-medium">CPF/CNPJ</th>
-                  <th className="py-3 font-medium">Telefone</th>
-                  <th className="py-3 font-medium">Email</th>
-                  <th className="py-3 font-medium">Empresa</th>
-                  <th className="py-3 font-medium">Avaliação</th>
-                  <th className="py-3 font-medium w-24 rounded-tr-lg">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {transportadores.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-8 text-center text-gray-500">
-                      Nenhum transportador cadastrado.
-                    </td>
-                  </tr>
-                ) : (
-                  transportadores.map((t) => (
-                    <tr key={t.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                      <td className="py-3 px-4 font-medium text-gray-900">{t.nome}</td>
-                      <td className="py-3 text-gray-600">{t.cpfOuCnpj}</td>
-                      <td className="py-3 text-gray-600">{t.telefone}</td>
-                      <td className="py-3 text-gray-600">{t.email}</td>
-                      <td className="py-3 text-gray-600">{t.empresa}</td>
-                      <td className="py-3">
-                        <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 px-2 py-1 rounded-md text-sm font-medium">
-                          <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                          {t.avaliacaoMedia > 0 ? t.avaliacaoMedia.toFixed(1) : "-"}
-                        </span>
-                      </td>
-                      <td className="py-3 flex gap-1">
+        <Card delay={0.1} className="!p-0 overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[200px]">Nome</TableHead>
+                <TableHead>CPF/CNPJ</TableHead>
+                <TableHead>Telefone</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Empresa</TableHead>
+                <TableHead>Avaliação</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {transportadores.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    Nenhum transportador cadastrado.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                transportadores.map((t) => (
+                  <TableRow key={t.id}>
+                    <TableCell className="font-medium text-slate-900 dark:text-slate-100">{t.nome}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{t.cpfOuCnpj}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{t.telefone}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{t.email}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{t.empresa}</TableCell>
+                    <TableCell>
+                      <span className="inline-flex items-center gap-1.5 bg-amber-50 dark:bg-amber-500/10 text-amber-700 dark:text-amber-500 px-2.5 py-1 rounded-md text-xs font-semibold border border-amber-200/50 dark:border-amber-500/20">
+                        <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                        {t.avaliacaoMedia > 0 ? t.avaliacaoMedia.toFixed(1) : "-"}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2">
                         <button
                           type="button"
                           onClick={() => openEdit(t)}
-                          className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors"
+                          className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors"
                           aria-label="Editar"
                         >
                           <Pencil className="w-4 h-4" />
@@ -145,18 +146,18 @@ export default function TransportadoresPage() {
                         <button
                           type="button"
                           onClick={() => handleDelete(t.id, t.nome)}
-                          className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+                          className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors"
                           aria-label="Excluir"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </Card>
 
         <Modal

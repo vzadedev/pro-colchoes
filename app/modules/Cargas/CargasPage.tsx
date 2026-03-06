@@ -7,6 +7,7 @@ import Card from "../../components/ui/Card";
 import Modal from "../../components/ui/Modal";
 import Badge, { variants } from "../../components/ui/Badge";
 import PageTransition from "../../components/ui/PageTransition";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/Table";
 import { Plus, Pencil, Trash2, Shuffle } from "lucide-react";
 import { toast } from "sonner";
 
@@ -142,51 +143,49 @@ export default function CargasPage() {
           </button>
         </div>
 
-        <Card delay={0.1}>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-gray-100 text-gray-600 text-sm bg-gray-50/50">
-                  <th className="py-3 px-4 font-medium rounded-tl-lg">Produto</th>
-                  <th className="py-3 font-medium">Qtd</th>
-                  <th className="py-3 font-medium">Peso</th>
-                  <th className="py-3 font-medium">Origem</th>
-                  <th className="py-3 font-medium">Destino</th>
-                  <th className="py-3 font-medium">Status</th>
-                  <th className="py-3 font-medium">Veículo</th>
-                  <th className="py-3 font-medium w-32 rounded-tr-lg">Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cargas.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="py-8 text-center text-gray-500">
-                      Nenhuma carga cadastrada.
-                    </td>
-                  </tr>
-                ) : (
-                  cargas.map((c) => (
-                    <tr key={c.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                      <td className="py-3 px-4 font-medium text-gray-900">{c.produto}</td>
-                      <td className="py-3 text-gray-600">{c.quantidade}</td>
-                      <td className="py-3 text-gray-600">{c.peso} kg</td>
-                      <td className="py-3 text-gray-600">{c.origem}</td>
-                      <td className="py-3 text-gray-600">{c.destino}</td>
-                      <td className="py-3">
-                        <Badge variant={statusVariant[c.status]}>
-                          {c.status}
-                        </Badge>
-                      </td>
-                      <td className="py-3 text-gray-600">
-                        {c.veiculoId
-                          ? getVeiculo(c.veiculoId)?.placa ?? "-"
-                          : "-"}
-                      </td>
-                      <td className="py-3 flex gap-1 flex-wrap">
+        <Card delay={0.1} className="!p-0 overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Produto</TableHead>
+                <TableHead>Qtd</TableHead>
+                <TableHead>Peso</TableHead>
+                <TableHead>Origem</TableHead>
+                <TableHead>Destino</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Veículo</TableHead>
+                <TableHead className="text-right">Ações</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {cargas.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={8} className="h-24 text-center">
+                    Nenhuma carga cadastrada.
+                  </TableCell>
+                </TableRow>
+              ) : (
+                cargas.map((c) => (
+                  <TableRow key={c.id}>
+                    <TableCell className="font-medium text-slate-900 dark:text-slate-100">{c.produto}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{c.quantidade}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{c.peso} kg</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{c.origem}</TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">{c.destino}</TableCell>
+                    <TableCell>
+                      <Badge variant={statusVariant[c.status]}>
+                        {c.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-slate-500 dark:text-slate-400">
+                      {c.veiculoId ? getVeiculo(c.veiculoId)?.placa ?? "-" : "-"}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-2 inline-flex items-center">
                         <button
                           type="button"
                           onClick={() => openEdit(c)}
-                          className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-md transition-colors"
+                          className="p-2 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-lg transition-colors"
                           aria-label="Editar"
                         >
                           <Pencil className="w-4 h-4" />
@@ -194,7 +193,7 @@ export default function CargasPage() {
                         <button
                           type="button"
                           onClick={() => handleDelete(c.id, c.produto)}
-                          className="p-1.5 text-red-600 hover:bg-red-100 rounded-md transition-colors"
+                          className="p-2 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg transition-colors"
                           aria-label="Excluir"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -203,20 +202,20 @@ export default function CargasPage() {
                           <button
                             type="button"
                             onClick={() => sortearCarga(c.id)}
-                            className="flex items-center gap-1 px-2 py-1.5 text-sm bg-amber-50 text-amber-700 rounded-md hover:bg-amber-100 transition-colors font-medium ml-1"
+                            className="flex items-center gap-1.5 px-2.5 py-1.5 ml-2 text-xs font-semibold bg-emerald-100/80 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 rounded-lg hover:bg-emerald-200/50 dark:hover:bg-emerald-500/20 transition-colors border border-emerald-200/50 dark:border-emerald-500/20"
                             title="Sortear carga (transportador/veículo aleatório)"
                           >
                             <Shuffle className="w-3.5 h-3.5" />
                             Sortear
                           </button>
                         )}
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
         </Card>
 
         <Modal
